@@ -4,10 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;700&display=swap" rel="stylesheet">
 
     <title>Les petits plats</title>
 </head>
 <body>
-    <h1 class="font-bold">Test</h1>
+    <header class="w-full bg-cover bg-center relative min-h-[400px] flex flex-col justify-center items-center" style="background-image: url('assets/menu_img.png');">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="relative z-10 w-full flex flex-col items-center">
+
+            <div class="w-full mt-8 flex items-center justify-start pl-12">
+                <img src="assets/logos/main_logo.svg" alt="Les Petits Plats" class="w-[207px] h-10" />
+            </div>
+
+            <h1 class="mt-42 text-center text-[#FFD15B] font-normal text-[44px] leading-tight drop-shadow-lg" style="font-family: 'Anton', sans-serif;">
+                CHERCHEZ PARMI PLUS DE 1500 RECETTES<br>
+                DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
+            </h1>
+
+            <form class="mt-8 mb-50 w-[954px] flex items-center justify-center relative">
+                <input type="text" placeholder="Rechercher une recette, un ingrédient, ..." class="w-full h-[72px] rounded-xl py-4 px-6 text-lg focus:outline-none bg-white" style="font-family: 'Manrope', sans-serif;" />
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black rounded-xl p-3 shadow-md cursor-pointer">
+                    <img src="assets/logos/search_logo.svg" alt="Les Petits Plats" class="w-[27px]" />
+                </button>
+            </form>
+        </div>
+    </header>
 </body>
 </html>
