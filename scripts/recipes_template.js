@@ -1,6 +1,6 @@
-// Template et affichage des filtres + nombre de recettes + cards
+// Template and rendering functions for recipes UI
 
-// Affiche les filtres et le nombre de recettes
+// Display filters and the number of recipes
 export function renderFiltersAndCount(recipes) {
   const container = document.getElementById('filters-bar');
   if (!container) return;
@@ -20,7 +20,7 @@ export function renderFiltersAndCount(recipes) {
   `;
 }
 
-// Card factory pour une recette
+// Card factory for a recipe
 export function recipeCard(recipe) {
   return `
     <div class="bg-white rounded-[21px] shadow-lg overflow-hidden flex flex-col w-[380px] min-h-[520px] mb-8">
@@ -46,14 +46,14 @@ export function recipeCard(recipe) {
   `;
 }
 
-// Affiche toutes les cards de recettes
+// Display all recipe cards
 export function renderRecipeCards(recipes) {
   const grid = document.getElementById('recipes-grid');
   if (!grid) return;
   grid.innerHTML = recipes.map(recipeCard).join('');
 }
 
-// Fonction d'initialisation à appeler dans index.js
+// Initialization function to be called in index.js
 export function renderRecipesUI(recipes) {
   renderFiltersAndCount(recipes);
   renderRecipeCards(recipes);
