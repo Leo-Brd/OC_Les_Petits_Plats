@@ -13,7 +13,7 @@ function createFilterDropdown(id, label, items) {
   
   // Use for loop to generate list items
   for (let i = 0; i < items.length; i++) {
-    itemsHTML += `<li class="py-[6px] hover:bg-[#FFD15B] cursor-pointer text-sm font-normal text-[#1B1B1B]" data-value="${items[i]}">${items[i]}</li>`;
+    itemsHTML += `<li class="py-1.5 px-4 hover:bg-[#FFD15B] cursor-pointer text-sm font-normal text-[#1B1B1B]" data-value="${items[i]}">${items[i]}</li>`;
   }
   
   return `
@@ -35,16 +35,15 @@ function createFilterDropdown(id, label, items) {
           <div class="flex items-center gap-2 mb-3 py-1.5 px-1 border border-[#C6C6C6]">
             <input 
               type="text" 
-              class="filter-input flex-1 text-sm font-normal focus:outline-none font-manrope text-[#1B1B1B] bg-transparent rounded-xs" 
+              class="filter-input flex-1 text-sm font-normal focus:outline-none font-manrope text-[#1B1B1B] bg-transparent rounded-xs w-[70%]" 
               placeholder=""
-            >
-              <button type="button" class="filter-clear hidden w-1.5 h-1.5 shrink-0 cursor-pointer">
-              <img src="assets/logos/cross.svg" alt="Effacer" class="w-1.5 h-1.5 block" aria-hidden="true"/>
-              </button>
-              <img class="w-3.5 h-3.5" src="assets/logos/gray_search_logo.svg" alt="" aria-hidden="true" />
-            </input>
+            />
+            <button type="button" class="filter-clear hidden w-2 h-2 shrink-0 cursor-pointer">
+              <img src="assets/logos/cross.svg" alt="Effacer" class="w-2 h-2 block" aria-hidden="true"/>
+            </button>
+            <img class="w-3.5 h-3.5" src="assets/logos/gray_search_logo.svg" alt="" aria-hidden="true" />
           </div>
-          <ul class="filter-list flex flex-col max-h-[200px] overflow-y-auto font-manrope">
+          <ul class="filter-list flex flex-col max-h-[200px] overflow-y-auto font-manrope -mx-4">
             ${itemsHTML}
           </ul>
         </div>
