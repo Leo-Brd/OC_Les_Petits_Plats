@@ -1,24 +1,24 @@
-// Template and rendering functions for recipes UI
-import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from './filters/keywordParsing.js';
+// HTML Templates
+// Uses only native for/while loops for iterations
+
+import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from '../utils/dataExtractors.js';
 
 /**
- * Create HTML for a dropdown filter
- * @param {string} id - Filter identifier (ingredients, appliances, ustensils)
+ * Create HTML for a filter dropdown
+ * @param {string} id - Filter identifier
  * @param {string} label - Filter label
- * @param {Array} items - Array of items to display
- * @returns {string} - HTML string for the filter
+ * @param {Array} items - Items to display
+ * @returns {string}
  */
-function createFilterDropdown(id, label, items) {
+export function createFilterDropdownHTML(id, label, items) {
   let itemsHTML = '';
   
-  // Use for loop to generate list items
   for (let i = 0; i < items.length; i++) {
     itemsHTML += `<li class="py-1.5 px-4 hover:bg-[#FFD15B] cursor-pointer text-sm font-normal text-[#1B1B1B]" data-value="${items[i]}">${items[i]}</li>`;
   }
   
   return `
     <div class="filter-wrapper w-[195px] h-14 relative" data-filter="${id}">
-
       <div class="filter-closed bg-white rounded-[11px] shadow-sm w-full px-4 py-4 cursor-pointer">
         <div class="filter-header flex items-center justify-between">
           <span class="font-manrope text-base font-medium text-[#1B1B1B]">${label}</span>
@@ -52,28 +52,44 @@ function createFilterDropdown(id, label, items) {
   `;
 }
 
-// Display filters and the number of recipes
-export function renderFiltersAndCount(recipes) {
-  const container = document.getElementById('filters-bar');
-  if (!container) return;
-  
-  // Extract unique values using native loops
+/**
+ * Create HTML for the filters bar
+ * @param {Array} recipes
+ * @returns {string}
+ */
+export function createFiltersBarHTML(recipes) {
   const ingredients = getUniqueIngredients(recipes);
   const appliances = getUniqueAppliances(recipes);
   const ustensils = getUniqueUstensils(recipes);
   
-  container.innerHTML = `
+  return `
     <div class="flex gap-8 justify-start items-center w-full mb-8">
-      ${createFilterDropdown('ingredients', 'Ingrédients', ingredients)}
-      ${createFilterDropdown('appliances', 'Appareils', appliances)}
-      ${createFilterDropdown('ustensils', 'Ustensiles', ustensils)}
+      ${createFilterDropdownHTML('ingredients', 'Ingrédients', ingredients)}
+      ${createFilterDropdownHTML('appliances', 'Appareils', appliances)}
+      ${createFilterDropdownHTML('ustensils', 'Ustensiles', ustensils)}
       <span class="ml-auto mr-16 text-black font-normal text-[21px]" style="font-family: 'Anton', sans-serif;">${recipes.length} recettes</span>
     </div>
   `;
 }
 
-// Card factory for a recipe
-export function recipeCard(recipe) {
+/**
+ * Create HTML for a recipe card
+ * @param {Object} recipe
+ * @returns {string}
+ */
+export function createRecipeCardHTML(recipe) {
+  let ingredientsHTML = '';
+  
+  for (let i = 0; i < recipe.ingredients.length; i++) {
+    const ing = recipe.ingredients[i];
+    ingredientsHTML += `
+      <span>
+        <span class="font-medium text-[#1B1B1B]">${ing.ingredient}</span>
+        ${ing.quantity ? `<br><span class="font-normal text-[#7A7A7A]">${ing.quantity}${ing.unit ? ` ${ing.unit}` : ''}</span>` : ''}
+      </span>
+    `;
+  }
+  
   return `
     <div class="bg-white rounded-[21px] shadow-lg overflow-hidden flex flex-col w-[380px] min-h-[520px] mb-8">
       <div class="relative w-full h-[220px]">
@@ -86,27 +102,26 @@ export function recipeCard(recipe) {
         <p class="text-sm text-[#1B1B1B] mb-8 font-normal" style="font-family: 'Manrope', sans-serif;">${recipe.description}</p>
         <h3 class="text-xs font-bold text-[#7A7A7A] mb-4">INGRÉDIENTS</h3>
         <div class="grid grid-cols-2 gap-x-4 gap-y-4 text-sm" style="font-family: 'Manrope', sans-serif;">
-          ${recipe.ingredients.map(ing => `
-            <span>
-              <span class="font-medium text-[#1B1B1B]">${ing.ingredient}</span>
-              ${ing.quantity ? `<br><span class=\"font-normal text-[#7A7A7A]\">${ing.quantity}${ing.unit ? ` ${ing.unit}` : ''}</span>` : ''}
-            </span>
-          `).join('')}
+          ${ingredientsHTML}
         </div>
       </div>
     </div>
   `;
 }
 
-// Display all recipe cards
-export function renderRecipeCards(recipes) {
-  const grid = document.getElementById('recipes-grid');
-  if (!grid) return;
-  grid.innerHTML = recipes.map(recipeCard).join('');
-}
-
-// Initialization function to be called in index.js
-export function renderRecipesUI(recipes) {
-  renderFiltersAndCount(recipes);
-  renderRecipeCards(recipes);
+/**
+ * Create HTML for a tag
+ * @param {string} value
+ * @param {string} category
+ * @returns {string}
+ */
+export function createTagHTML(value, category) {
+  return `
+    <span class="tag flex items-center gap-2.5 bg-[#FFD15B] rounded-[10px] px-[18px] py-[17px] text-sm font-normal" data-category="${category}" data-value="${value}" style="font-family: 'Manrope', sans-serif;">
+      ${value}
+      <button type="button" class="tag-remove cursor-pointer">
+        <img src="assets/logos/black_cross.svg" alt="Retirer" class="w-3.5 h-3.5" />
+      </button>
+    </span>
+  `;
 }

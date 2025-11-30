@@ -1,10 +1,12 @@
+// Application entry point
 import { recipes } from '../assets/recipes.js';
-import { renderRecipesUI } from './recipes_template.js';
-import { initFilterDropdowns } from './filters/keywordFilterInteractions.js';
-import { initMainSearch } from './search/mainSearch.js';
+import { initState } from './state/appState.js';
+import { initFilterController } from './controllers/filterController.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderRecipesUI(recipes);
-  initFilterDropdowns();
-  initMainSearch(recipes);
+  // Initialize state with all recipes
+  initState(recipes);
+  
+  // Initialize filter controller (sets up UI and interactions)
+  initFilterController();
 });

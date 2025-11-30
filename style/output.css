@@ -425,8 +425,17 @@
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
+  .gap-2\.5 {
+    gap: calc(var(--spacing) * 2.5);
+  }
+  .gap-4 {
+    gap: calc(var(--spacing) * 4);
+  }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
+  }
+  .gap-\[10px\] {
+    gap: 10px;
   }
   .gap-x-4 {
     column-gap: calc(var(--spacing) * 4);
@@ -442,6 +451,9 @@
   }
   .overflow-y-auto {
     overflow-y: auto;
+  }
+  .rounded-\[10px\] {
+    border-radius: 10px;
   }
   .rounded-\[11px\] {
     border-radius: 11px;
@@ -519,6 +531,9 @@
   .px-12 {
     padding-inline: calc(var(--spacing) * 12);
   }
+  .px-\[18px\] {
+    padding-inline: 18px;
+  }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
@@ -530,6 +545,9 @@
   }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
+  }
+  .py-\[17px\] {
+    padding-block: 17px;
   }
   .pr-24 {
     padding-right: calc(var(--spacing) * 24);
