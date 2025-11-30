@@ -23,7 +23,10 @@
             </h1>
 
             <form class="mt-8 mb-50 w-[954px] flex items-center justify-center relative" id="main-search-form">
-                <input type="text" id="main-search-input" placeholder="Rechercher une recette, un ingrédient, ..." class="w-full h-[72px] rounded-xl py-4 px-6 text-lg focus:outline-none bg-white" style="font-family: 'Manrope', sans-serif;" />
+                <input type="text" id="main-search-input" placeholder="Rechercher une recette, un ingrédient, ..." class="w-full h-[72px] rounded-xl py-4 px-6 pr-24 text-lg focus:outline-none bg-white" style="font-family: 'Manrope', sans-serif;" />
+                <button type="button" id="main-search-clear" class="hidden absolute right-16 top-1/2 -translate-y-1/2 cursor-pointer mr-3">
+                    <img src="assets/logos/cross.svg" alt="Effacer" class="w-3.5 h-3.5" />
+                </button>
                 <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black rounded-xl p-3 shadow-md cursor-pointer">
                     <img src="assets/logos/white_search_logo.svg" alt="Logo Recherche" class="w-[27px]" />
                 </button>

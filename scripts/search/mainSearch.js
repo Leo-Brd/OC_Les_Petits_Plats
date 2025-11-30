@@ -76,8 +76,9 @@ export function searchRecipes(recipes, query) {
 export function initMainSearch(recipes) {
   const searchInput = document.getElementById('main-search-input');
   const searchForm = document.getElementById('main-search-form');
+  const clearButton = document.getElementById('main-search-clear');
   
-  if (!searchInput || !searchForm) {
+  if (!searchInput || !searchForm || !clearButton) {
     console.error('Main search elements not found');
     return;
   }
@@ -91,11 +92,31 @@ export function initMainSearch(recipes) {
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.trim();
     
+    // Show/hide clear button
+    if (query.length > 0) {
+      clearButton.classList.remove('hidden');
+    } else {
+      clearButton.classList.add('hidden');
+    }
+    
     // Filter recipes
     const filteredRecipes = searchRecipes(recipes, query);
     
     // Update display
     renderRecipeCards(filteredRecipes);
     renderFiltersAndCount(filteredRecipes);
+  });
+  
+  // Clear button click
+  clearButton.addEventListener('click', () => {
+    searchInput.value = '';
+    clearButton.classList.add('hidden');
+    
+    // Reset to all recipes
+    renderRecipeCards(recipes);
+    renderFiltersAndCount(recipes);
+    
+    // Focus back on input
+    searchInput.focus();
   });
 }
