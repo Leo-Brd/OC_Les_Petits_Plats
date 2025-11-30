@@ -1,20 +1,73 @@
 // Template and rendering functions for recipes UI
+import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from './utils/filters.js';
+
+/**
+ * Create HTML for a dropdown filter
+ * @param {string} id - Filter identifier (ingredients, appliances, ustensils)
+ * @param {string} label - Filter label
+ * @param {Array} items - Array of items to display
+ * @returns {string} - HTML string for the filter
+ */
+function createFilterDropdown(id, label, items) {
+  let itemsHTML = '';
+  
+  // Use for loop to generate list items
+  for (let i = 0; i < items.length; i++) {
+    itemsHTML += `<li class="py-[6px] hover:bg-[#FFD15B] cursor-pointer text-sm font-normal text-[#1B1B1B]" data-value="${items[i]}">${items[i]}</li>`;
+  }
+  
+  return `
+    <div class="filter-wrapper w-[195px] h-[56px] relative" data-filter="${id}">
+
+      <div class="filter-closed bg-white rounded-[11px] shadow-sm w-full px-4 py-4 cursor-pointer">
+        <div class="filter-header flex items-center justify-between">
+          <span class="font-manrope text-base font-medium text-[#1B1B1B]">${label}</span>
+          <img src="assets/logos/arrow_down.svg" alt="" class="w-[13px] h-4 filter-arrow transition-transform duration-200" aria-hidden="true" />
+        </div>
+      </div>
+      
+      <div class="filter-opened hidden absolute top-0 left-0 w-full bg-white rounded-[11px] shadow-lg px-4 py-4 z-[9999]">
+        <div class="filter-header-open flex items-center justify-between cursor-pointer">
+          <span class="font-manrope text-base font-medium text-[#1B1B1B]">${label}</span>
+          <img src="assets/logos/arrow_down.svg" alt="" class="w-[13px] h-4 rotate-180" aria-hidden="true" />
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center gap-2 mb-3 py-1.5 px-1 border border-[#C6C6C6]">
+            <input 
+              type="text" 
+              class="filter-input flex-1 text-sm font-normal focus:outline-none font-manrope text-[#1B1B1B] bg-transparent rounded-xs" 
+              placeholder=""
+            >
+              <button type="button" class="filter-clear hidden w-1.5 h-1.5 shrink-0 cursor-pointer">
+              <img src="assets/logos/cross.svg" alt="Effacer" class="w-1.5 h-1.5 block" aria-hidden="true"/>
+              </button>
+              <img class="w-3.5 h-3.5" src="assets/logos/gray_search_logo.svg" alt="" aria-hidden="true" />
+            </input>
+          </div>
+          <ul class="filter-list flex flex-col max-h-[200px] overflow-y-auto font-manrope">
+            ${itemsHTML}
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
 // Display filters and the number of recipes
 export function renderFiltersAndCount(recipes) {
   const container = document.getElementById('filters-bar');
   if (!container) return;
+  
+  // Extract unique values using native loops
+  const ingredients = getUniqueIngredients(recipes);
+  const appliances = getUniqueAppliances(recipes);
+  const ustensils = getUniqueUstensils(recipes);
+  
   container.innerHTML = `
     <div class="flex gap-8 justify-start items-center w-full mb-8">
-      <div class="bg-white rounded-[11px] px-3 py-3 shadow-md cursor-pointer w-[195px]">
-        <button class="font-manrope text-base font-medium flex items-center gap-2 cursor-pointer w-full justify-between">Ingrédients <img src="assets/logos/arrow_down.svg" alt="" class="w-[13px] h-4 ml-2" aria-hidden="true" /></button>
-      </div>
-      <div class="bg-white rounded-[11px] px-3 py-3 shadow-md cursor-pointer w-[195px]">
-        <button class="font-manrope text-base font-medium flex items-center gap-2 cursor-pointer w-full justify-between">Appareils <img src="assets/logos/arrow_down.svg" alt="" class="w-[13px] h-4 ml-2" aria-hidden="true" /></button>
-      </div>
-      <div class="bg-white rounded-[11px] px-3 py-3 shadow-md cursor-pointer w-[195px]">
-        <button class="font-manrope text-base font-medium flex items-center gap-2 cursor-pointer w-full justify-between">Ustensiles <img src="assets/logos/arrow_down.svg" alt="" class="w-[13px] h-4 ml-2" aria-hidden="true" /></button>
-      </div>
+      ${createFilterDropdown('ingredients', 'Ingrédients', ingredients)}
+      ${createFilterDropdown('appliances', 'Appareils', appliances)}
+      ${createFilterDropdown('ustensils', 'Ustensiles', ustensils)}
       <span class="ml-auto mr-16 text-black font-normal text-[21px]" style="font-family: 'Anton', sans-serif;">${recipes.length} recettes</span>
     </div>
   `;
