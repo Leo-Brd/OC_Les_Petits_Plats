@@ -63,7 +63,7 @@ export function createFiltersBarHTML(recipes) {
   const ustensils = getUniqueUstensils(recipes);
   
   return `
-    <div class="flex gap-8 justify-start items-center w-full mb-8">
+    <div class="flex gap-8 justify-start items-center w-full">
       ${createFilterDropdownHTML('ingredients', 'Ingrédients', ingredients)}
       ${createFilterDropdownHTML('appliances', 'Appareils', appliances)}
       ${createFilterDropdownHTML('ustensils', 'Ustensiles', ustensils)}
@@ -117,7 +117,7 @@ export function createRecipeCardHTML(recipe) {
  */
 export function createTagHTML(value, category) {
   return `
-    <span class="tag flex items-center gap-2.5 bg-[#FFD15B] rounded-[10px] px-[18px] py-[17px] text-sm font-normal" data-category="${category}" data-value="${value}" style="font-family: 'Manrope', sans-serif;">
+    <span class="tag w-[195px] flex items-center justify-between bg-[#FFD15B] rounded-[10px] px-4 py-4 text-sm font-normal" data-category="${category}" data-value="${value}" style="font-family: 'Manrope', sans-serif;">
       ${value}
       <button type="button" class="tag-remove cursor-pointer">
         <img src="assets/logos/black_cross.svg" alt="Retirer" class="w-3.5 h-3.5" />
