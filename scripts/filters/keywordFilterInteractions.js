@@ -1,5 +1,5 @@
 // Filter dropdown interaction handlers using native loops only
-import { filterItems } from './filters.js';
+import { filterItems } from './keywordParsing.js';
 
 /**
  * Initialize filter dropdown interactions

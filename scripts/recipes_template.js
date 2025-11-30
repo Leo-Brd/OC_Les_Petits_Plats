@@ -1,5 +1,5 @@
 // Template and rendering functions for recipes UI
-import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from './utils/filters.js';
+import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from './filters/keywordParsing.js';
 
 /**
  * Create HTML for a dropdown filter
@@ -17,7 +17,7 @@ function createFilterDropdown(id, label, items) {
   }
   
   return `
-    <div class="filter-wrapper w-[195px] h-[56px] relative" data-filter="${id}">
+    <div class="filter-wrapper w-[195px] h-14 relative" data-filter="${id}">
 
       <div class="filter-closed bg-white rounded-[11px] shadow-sm w-full px-4 py-4 cursor-pointer">
         <div class="filter-header flex items-center justify-between">
