@@ -1,5 +1,5 @@
 // Filter dropdowns rendering and interactions
-// Uses only native for/while loops
+// Uses Array methods (map, forEach, filter, etc.)
 
 import { createFiltersBarHTML } from './templates.js';
 import { filterDropdownItems } from '../algorithms/searchAlgorithm.js';
@@ -32,9 +32,8 @@ export function renderFiltersBar(recipes) {
 export function initFilterDropdowns() {
   const filterWrappers = document.querySelectorAll('.filter-wrapper');
   
-  for (let i = 0; i < filterWrappers.length; i++) {
-    setupDropdown(filterWrappers[i]);
-  }
+  // Use forEach on NodeList (converted to Array)
+  Array.from(filterWrappers).forEach(wrapper => setupDropdown(wrapper));
   
   // Close all filters when clicking outside
   document.addEventListener('click', (e) => {
@@ -57,15 +56,12 @@ function setupDropdown(wrapper) {
   const filterClear = wrapper.querySelector('.filter-clear');
   const filterList = wrapper.querySelector('.filter-list');
   
-  // Store original items
-  const originalItems = [];
+  // Store original items using map
   const listItems = filterList.querySelectorAll('li');
-  for (let j = 0; j < listItems.length; j++) {
-    originalItems.push({
-      value: listItems[j].dataset.value,
-      html: listItems[j].outerHTML
-    });
-  }
+  const originalItems = Array.from(listItems).map(item => ({
+    value: item.dataset.value,
+    html: item.outerHTML
+  }));
   
   // Open filter
   filterHeader.addEventListener('click', (e) => {
@@ -93,11 +89,8 @@ function setupDropdown(wrapper) {
       filterClear.classList.add('hidden');
     }
     
-    // Get values
-    const values = [];
-    for (let k = 0; k < originalItems.length; k++) {
-      values.push(originalItems[k].value);
-    }
+    // Get values using map
+    const values = originalItems.map(item => item.value);
     
     // Filter and rebuild list
     const filtered = filterDropdownItems(values, query);
@@ -137,23 +130,11 @@ function closeDropdown(wrapper, filterClosed, filterOpened, filterInput, filterC
  * Rebuild list with filtered items
  */
 function rebuildList(filterList, originalItems, filtered, wrapper) {
-  let html = '';
-  
-  for (let k = 0; k < originalItems.length; k++) {
-    const item = originalItems[k];
-    let isIncluded = false;
-    
-    for (let m = 0; m < filtered.length; m++) {
-      if (filtered[m] === item.value) {
-        isIncluded = true;
-        break;
-      }
-    }
-    
-    if (isIncluded) {
-      html += item.html;
-    }
-  }
+  // Filter originalItems to keep only those in filtered, then map to HTML
+  const html = originalItems
+    .filter(item => filtered.includes(item.value))
+    .map(item => item.html)
+    .join('');
   
   filterList.innerHTML = html;
   attachListItemListeners(filterList, wrapper);
@@ -163,10 +144,7 @@ function rebuildList(filterList, originalItems, filtered, wrapper) {
  * Restore full list
  */
 function restoreList(filterList, originalItems, wrapper) {
-  let html = '';
-  for (let k = 0; k < originalItems.length; k++) {
-    html += originalItems[k].html;
-  }
+  const html = originalItems.map(item => item.html).join('');
   filterList.innerHTML = html;
   attachListItemListeners(filterList, wrapper);
 }
@@ -176,10 +154,11 @@ function restoreList(filterList, originalItems, wrapper) {
  */
 function attachListItemListeners(filterList, wrapper) {
   const items = filterList.querySelectorAll('li');
-  for (let i = 0; i < items.length; i++) {
-    items[i].addEventListener('click', () => {
+  
+  Array.from(items).forEach(item => {
+    item.addEventListener('click', () => {
       const category = wrapper.dataset.filter;
-      const value = items[i].dataset.value;
+      const value = item.dataset.value;
       
       if (onItemSelected) {
         onItemSelected(category, value);
@@ -189,7 +168,7 @@ function attachListItemListeners(filterList, wrapper) {
         wrapper._close();
       }
     });
-  }
+  });
 }
 
 /**
@@ -197,9 +176,10 @@ function attachListItemListeners(filterList, wrapper) {
  */
 function closeAllFilters() {
   const filterWrappers = document.querySelectorAll('.filter-wrapper');
-  for (let i = 0; i < filterWrappers.length; i++) {
-    if (filterWrappers[i]._close) {
-      filterWrappers[i]._close();
+  
+  Array.from(filterWrappers).forEach(wrapper => {
+    if (wrapper._close) {
+      wrapper._close();
     }
-  }
+  });
 }

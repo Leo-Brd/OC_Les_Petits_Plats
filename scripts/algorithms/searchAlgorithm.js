@@ -1,5 +1,5 @@
 // Search algorithm - Pure filtering logic (no UI)
-// Uses only native for/while loops
+// Uses Array methods (forEach, filter, some, every, etc.)
 
 /**
  * Check if text contains query (case-insensitive)
@@ -9,7 +9,7 @@
  */
 function containsQuery(text, query) {
   if (!text || !query) return false;
-  return text.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+  return text.toLowerCase().includes(query.toLowerCase());
 }
 
 /**
@@ -28,12 +28,8 @@ function matchesMainSearch(recipe, query) {
   // Check description
   if (containsQuery(recipe.description, query)) return true;
   
-  // Check ingredients using for loop
-  for (let i = 0; i < recipe.ingredients.length; i++) {
-    if (containsQuery(recipe.ingredients[i].ingredient, query)) return true;
-  }
-  
-  return false;
+  // Check ingredients using Array.some()
+  return recipe.ingredients.some(ing => containsQuery(ing.ingredient, query));
 }
 
 /**
@@ -45,21 +41,13 @@ function matchesMainSearch(recipe, query) {
 function matchesIngredientTags(recipe, tags) {
   if (tags.length === 0) return true;
   
-  for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i].toLowerCase();
-    let found = false;
-    
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-      if (recipe.ingredients[j].ingredient.toLowerCase().indexOf(tag) !== -1) {
-        found = true;
-        break;
-      }
-    }
-    
-    if (!found) return false;
-  }
-  
-  return true;
+  // All tags must be found (every), and for each tag, at least one ingredient must match (some)
+  return tags.every(tag => {
+    const lowerTag = tag.toLowerCase();
+    return recipe.ingredients.some(ing => 
+      ing.ingredient.toLowerCase().includes(lowerTag)
+    );
+  });
 }
 
 /**
@@ -71,14 +59,10 @@ function matchesIngredientTags(recipe, tags) {
 function matchesApplianceTags(recipe, tags) {
   if (tags.length === 0) return true;
   
-  for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i].toLowerCase();
-    if (recipe.appliance.toLowerCase().indexOf(tag) === -1) {
-      return false;
-    }
-  }
-  
-  return true;
+  // All tags must match the appliance
+  return tags.every(tag => 
+    recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+  );
 }
 
 /**
@@ -90,21 +74,13 @@ function matchesApplianceTags(recipe, tags) {
 function matchesUstensilTags(recipe, tags) {
   if (tags.length === 0) return true;
   
-  for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i].toLowerCase();
-    let found = false;
-    
-    for (let j = 0; j < recipe.ustensils.length; j++) {
-      if (recipe.ustensils[j].toLowerCase().indexOf(tag) !== -1) {
-        found = true;
-        break;
-      }
-    }
-    
-    if (!found) return false;
-  }
-  
-  return true;
+  // All tags must be found (every), and for each tag, at least one ustensil must match (some)
+  return tags.every(tag => {
+    const lowerTag = tag.toLowerCase();
+    return recipe.ustensils.some(ustensil => 
+      ustensil.toLowerCase().includes(lowerTag)
+    );
+  });
 }
 
 /**
@@ -115,21 +91,15 @@ function matchesUstensilTags(recipe, tags) {
  * @returns {Array} - Filtered recipes
  */
 export function filterRecipes(recipes, searchQuery, tags) {
-  const filtered = [];
-  
-  for (let i = 0; i < recipes.length; i++) {
-    const recipe = recipes[i];
-    
+  return recipes.filter(recipe => {
     // Check all filters (AND logic)
-    if (!matchesMainSearch(recipe, searchQuery)) continue;
-    if (!matchesIngredientTags(recipe, tags.ingredients)) continue;
-    if (!matchesApplianceTags(recipe, tags.appliances)) continue;
-    if (!matchesUstensilTags(recipe, tags.ustensils)) continue;
+    if (!matchesMainSearch(recipe, searchQuery)) return false;
+    if (!matchesIngredientTags(recipe, tags.ingredients)) return false;
+    if (!matchesApplianceTags(recipe, tags.appliances)) return false;
+    if (!matchesUstensilTags(recipe, tags.ustensils)) return false;
     
-    filtered.push(recipe);
-  }
-  
-  return filtered;
+    return true;
+  });
 }
 
 /**
@@ -141,14 +111,6 @@ export function filterRecipes(recipes, searchQuery, tags) {
 export function filterDropdownItems(items, query) {
   if (!query || query.length === 0) return items;
   
-  const filtered = [];
   const lowerQuery = query.toLowerCase();
-  
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].toLowerCase().indexOf(lowerQuery) !== -1) {
-      filtered.push(items[i]);
-    }
-  }
-  
-  return filtered;
+  return items.filter(item => item.toLowerCase().includes(lowerQuery));
 }

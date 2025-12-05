@@ -1,4 +1,6 @@
 // Recipe cards rendering
+// Uses Array methods (map, forEach, etc.)
+
 import { createRecipeCardHTML } from './templates.js';
 
 // Number of cards per row
@@ -20,18 +22,14 @@ export function renderRecipeCards(recipes) {
   const grid = document.getElementById('recipes-grid');
   if (!grid) return;
   
-  let html = '';
-  for (let i = 0; i < recipes.length; i++) {
-    html += createRecipeCardHTML(recipes[i]);
-  }
+  // Generate recipe cards HTML using map
+  let html = recipes.map(recipe => createRecipeCardHTML(recipe)).join('');
   
   // Add invisible placeholders to fill last row
   const remainder = recipes.length % CARDS_PER_ROW;
   if (remainder !== 0) {
     const placeholdersNeeded = CARDS_PER_ROW - remainder;
-    for (let i = 0; i < placeholdersNeeded; i++) {
-      html += createPlaceholderCard();
-    }
+    html += Array(placeholdersNeeded).fill(null).map(() => createPlaceholderCard()).join('');
   }
   
   grid.innerHTML = html;

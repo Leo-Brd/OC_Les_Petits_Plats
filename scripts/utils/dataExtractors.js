@@ -1,5 +1,5 @@
 // Data extraction utilities
-// Uses only native for/while loops
+// Uses Array methods (forEach, flatMap, reduce, etc.)
 
 /**
  * Extract unique ingredients from recipes
@@ -7,25 +7,18 @@
  * @returns {Array} - Sorted unique ingredients
  */
 export function getUniqueIngredients(recipes) {
-  const items = [];
-  const seen = {};
+  const seen = new Map();
   
-  for (let i = 0; i < recipes.length; i++) {
-    const recipe = recipes[i];
-    
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-      const ingredient = recipe.ingredients[j].ingredient;
-      const key = ingredient.toLowerCase();
-      
-      if (!seen[key]) {
-        seen[key] = true;
-        items.push(ingredient);
+  recipes.forEach(recipe => {
+    recipe.ingredients.forEach(ing => {
+      const key = ing.ingredient.toLowerCase();
+      if (!seen.has(key)) {
+        seen.set(key, ing.ingredient);
       }
-    }
-  }
+    });
+  });
   
-  items.sort((a, b) => a.localeCompare(b));
-  return items;
+  return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
 }
 
 /**
@@ -34,21 +27,16 @@ export function getUniqueIngredients(recipes) {
  * @returns {Array} - Sorted unique appliances
  */
 export function getUniqueAppliances(recipes) {
-  const items = [];
-  const seen = {};
+  const seen = new Map();
   
-  for (let i = 0; i < recipes.length; i++) {
-    const appliance = recipes[i].appliance;
-    const key = appliance.toLowerCase();
-    
-    if (!seen[key]) {
-      seen[key] = true;
-      items.push(appliance);
+  recipes.forEach(recipe => {
+    const key = recipe.appliance.toLowerCase();
+    if (!seen.has(key)) {
+      seen.set(key, recipe.appliance);
     }
-  }
+  });
   
-  items.sort((a, b) => a.localeCompare(b));
-  return items;
+  return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
 }
 
 /**
@@ -57,23 +45,16 @@ export function getUniqueAppliances(recipes) {
  * @returns {Array} - Sorted unique ustensils
  */
 export function getUniqueUstensils(recipes) {
-  const items = [];
-  const seen = {};
+  const seen = new Map();
   
-  for (let i = 0; i < recipes.length; i++) {
-    const recipe = recipes[i];
-    
-    for (let j = 0; j < recipe.ustensils.length; j++) {
-      const ustensil = recipe.ustensils[j];
+  recipes.forEach(recipe => {
+    recipe.ustensils.forEach(ustensil => {
       const key = ustensil.toLowerCase();
-      
-      if (!seen[key]) {
-        seen[key] = true;
-        items.push(ustensil);
+      if (!seen.has(key)) {
+        seen.set(key, ustensil);
       }
-    }
-  }
+    });
+  });
   
-  items.sort((a, b) => a.localeCompare(b));
-  return items;
+  return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
 }

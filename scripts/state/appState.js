@@ -1,5 +1,5 @@
 // Application state - Pure data storage (no logic)
-// Uses only native for/while loops
+// Uses Array methods (forEach, filter, some, etc.)
 
 const state = {
   allRecipes: [],
@@ -58,12 +58,13 @@ export function getSelectedTags() {
  * @returns {boolean} - true if tag was added, false if already exists
  */
 export function addTag(category, value) {
-  // Check if tag already exists using for loop
-  for (let i = 0; i < state.selectedTags[category].length; i++) {
-    if (state.selectedTags[category][i].toLowerCase() === value.toLowerCase()) {
-      return false;
-    }
-  }
+  // Check if tag already exists using Array.some()
+  const exists = state.selectedTags[category].some(
+    tag => tag.toLowerCase() === value.toLowerCase()
+  );
+  
+  if (exists) return false;
+  
   state.selectedTags[category].push(value);
   return true;
 }
@@ -74,11 +75,7 @@ export function addTag(category, value) {
  * @param {string} value
  */
 export function removeTag(category, value) {
-  const newTags = [];
-  for (let i = 0; i < state.selectedTags[category].length; i++) {
-    if (state.selectedTags[category][i].toLowerCase() !== value.toLowerCase()) {
-      newTags.push(state.selectedTags[category][i]);
-    }
-  }
-  state.selectedTags[category] = newTags;
+  state.selectedTags[category] = state.selectedTags[category].filter(
+    tag => tag.toLowerCase() !== value.toLowerCase()
+  );
 }

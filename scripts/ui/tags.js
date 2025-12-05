@@ -1,5 +1,5 @@
 // Tags rendering and interactions
-// Uses only native for/while loops
+// Uses Array methods (map, forEach, etc.)
 
 import { createTagHTML } from './templates.js';
 import { getSelectedTags } from '../state/appState.js';
@@ -23,29 +23,20 @@ export function renderTags() {
   if (!container) return;
   
   const tags = getSelectedTags();
-  let html = '';
   
-  // Render ingredient tags
-  for (let i = 0; i < tags.ingredients.length; i++) {
-    html += createTagHTML(tags.ingredients[i], 'ingredients');
-  }
-  
-  // Render appliance tags
-  for (let i = 0; i < tags.appliances.length; i++) {
-    html += createTagHTML(tags.appliances[i], 'appliances');
-  }
-  
-  // Render ustensil tags
-  for (let i = 0; i < tags.ustensils.length; i++) {
-    html += createTagHTML(tags.ustensils[i], 'ustensils');
-  }
+  // Generate HTML for all tags using map and join
+  const html = [
+    ...tags.ingredients.map(tag => createTagHTML(tag, 'ingredients')),
+    ...tags.appliances.map(tag => createTagHTML(tag, 'appliances')),
+    ...tags.ustensils.map(tag => createTagHTML(tag, 'ustensils'))
+  ].join('');
   
   container.innerHTML = html;
   
-  // Attach remove listeners
+  // Attach remove listeners using forEach
   const removeButtons = container.querySelectorAll('.tag-remove');
-  for (let i = 0; i < removeButtons.length; i++) {
-    const button = removeButtons[i];
+  
+  Array.from(removeButtons).forEach(button => {
     const tag = button.closest('.tag');
     const category = tag.dataset.category;
     const value = tag.dataset.value;
@@ -55,5 +46,5 @@ export function renderTags() {
         onTagRemoved(category, value);
       }
     });
-  }
+  });
 }

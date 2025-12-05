@@ -1,5 +1,5 @@
 // HTML Templates
-// Uses only native for/while loops for iterations
+// Uses Array methods (map, forEach, etc.)
 
 import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from '../utils/dataExtractors.js';
 
@@ -11,11 +11,9 @@ import { getUniqueIngredients, getUniqueAppliances, getUniqueUstensils } from '.
  * @returns {string}
  */
 export function createFilterDropdownHTML(id, label, items) {
-  let itemsHTML = '';
-  
-  for (let i = 0; i < items.length; i++) {
-    itemsHTML += `<li class="py-1.5 px-4 hover:bg-[#FFD15B] cursor-pointer text-sm font-normal text-[#1B1B1B]" data-value="${items[i]}">${items[i]}</li>`;
-  }
+  const itemsHTML = items.map(item => 
+    `<li class="py-1.5 px-4 hover:bg-[#FFD15B] cursor-pointer text-sm font-normal text-[#1B1B1B]" data-value="${item}">${item}</li>`
+  ).join('');
   
   return `
     <div class="filter-wrapper w-[195px] h-14 relative" data-filter="${id}">
@@ -78,17 +76,12 @@ export function createFiltersBarHTML(recipes) {
  * @returns {string}
  */
 export function createRecipeCardHTML(recipe) {
-  let ingredientsHTML = '';
-  
-  for (let i = 0; i < recipe.ingredients.length; i++) {
-    const ing = recipe.ingredients[i];
-    ingredientsHTML += `
-      <span>
-        <span class="font-medium text-[#1B1B1B]">${ing.ingredient}</span>
-        ${ing.quantity ? `<br><span class="font-normal text-[#7A7A7A]">${ing.quantity}${ing.unit ? ` ${ing.unit}` : ''}</span>` : ''}
-      </span>
-    `;
-  }
+  const ingredientsHTML = recipe.ingredients.map(ing => `
+    <span>
+      <span class="font-medium text-[#1B1B1B]">${ing.ingredient}</span>
+      ${ing.quantity ? `<br><span class="font-normal text-[#7A7A7A]">${ing.quantity}${ing.unit ? ` ${ing.unit}` : ''}</span>` : ''}
+    </span>
+  `).join('');
   
   return `
     <div class="bg-white rounded-[21px] shadow-lg overflow-hidden flex flex-col w-[380px] min-h-[520px] mb-8">
