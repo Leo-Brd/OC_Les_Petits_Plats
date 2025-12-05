@@ -4,4 +4,4 @@ OpenClassrooms React Developer formation : project 7
 
 ---
 
-Version de l'algorithme utilisant uniquement l'objet Array ( forEach, filter, include, some etc... ) lors du parcours de données
+Version of the algorithm using only the Array object (forEach, filter, include, some etc...) during data traversal
