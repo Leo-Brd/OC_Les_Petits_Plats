@@ -22,8 +22,11 @@
                 DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
             </h1>
 
-            <form class="mt-8 mb-50 w-[954px] flex items-center justify-center relative">
-                <input type="text" placeholder="Rechercher une recette, un ingrédient, ..." class="w-full h-[72px] rounded-xl py-4 px-6 text-lg focus:outline-none bg-white" style="font-family: 'Manrope', sans-serif;" />
+            <form class="mt-8 mb-50 w-[954px] flex items-center justify-center relative" id="main-search-form">
+                <input type="text" id="main-search-input" placeholder="Rechercher une recette, un ingrédient, ..." class="w-full h-[72px] rounded-xl py-4 px-6 pr-24 text-lg focus:outline-none bg-white" style="font-family: 'Manrope', sans-serif;" />
+                <button type="button" id="main-search-clear" class="hidden absolute right-16 top-1/2 -translate-y-1/2 cursor-pointer mr-3">
+                    <img src="assets/logos/cross.svg" alt="Effacer" class="w-3.5 h-3.5" />
+                </button>
                 <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black rounded-xl p-3 shadow-md cursor-pointer">
                     <img src="assets/logos/white_search_logo.svg" alt="Logo Recherche" class="w-[27px]" />
                 </button>
@@ -31,10 +34,12 @@
         </div>
     </header>
 
-    <main class="bg-[#EDEDED] px-12">
-        <section id="filters-bar" class="w-full px-8 py-6"></section>
+    <main class="bg-[#EDEDED] px-12 relative">
+        <section id="filters-bar" class="w-full px-8 py-6 relative z-50"></section>
 
-        <section id="recipes-grid" class="w-full flex flex-wrap px-8 gap-y-10 justify-between"></section>
+        <div id="tags-container" class="flex flex-wrap gap-8 px-8 mb-6"></div>
+
+        <section id="recipes-grid" class="w-full flex flex-wrap px-8 gap-y-10 justify-between mt-8"></section>
     </main>
 
 
